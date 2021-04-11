@@ -258,3 +258,71 @@ function stopTime() {
   timerEl = 0;
   clearInterval(timer);
 }
+function endOfGame() {
+  console.log("endOfGame");
+  stopTime();
+  clearForm();
+
+  timerTab.setAttribute("style", "visibility: hidden;");
+
+  var heading = document.createElement("p");
+  heading.setAttribute("id", "main-heading");
+  heading.textContent = "GAME OVER - I hope you have enjoyed this";
+
+  // creates elements with the instructions for the game
+  var instructions = document.createElement("p");
+  instructions.setAttribute("id", "instructions");
+  instructions.textContent = " Your score is " + score; 
+
+  // creates button to start the game
+  var playAgain = document.createElement("button");
+  playAgain.setAttribute("id", "playAgain");
+  playAgain.setAttribute("class", "btn btn-secondary");
+  playAgain.textContent = "Play again";
+
+  // creates input for user to add initials
+  var par = document.createElement("p");
+
+  var initialsLabel = document.createElement("label");
+  initialsLabel.setAttribute("for","userInitials");
+  initialsLabel.textContent = "Enter Initials: ";
+
+  var initialsInput = document.createElement("input");
+  initialsInput.setAttribute("id","userInitials");
+  initialsInput.setAttribute("name","userInitials");
+  initialsInput.setAttribute("minlength","3");
+  initialsInput.setAttribute("maxlength","3");
+  initialsInput.setAttribute("size","3");
+
+
+  mainEl.appendChild(heading);
+  mainEl.appendChild(instructions);
+  mainEl.appendChild(initialsLabel);
+  mainEl.appendChild(initialsInput);
+  mainEl.appendChild(par);
+  mainEl.appendChild(playAgain);
+
+  playAgain.addEventListener("click", round1);
+
+  initialsInput.addEventListener("input", function() {
+    initialsInput.value = initialsInput.value.toUpperCase();
+    if ( initialsInput.value.length === 3 ) { 
+
+      //create object for this score
+      var thisScore = [ { type: quizType, name: initialsInput.value, score: score } ]; 
+
+      //get highscores from memory
+      var storedScores = JSON.parse(localStorage.getItem("highScores")); 
+      if (test) { console.log("storedScore",storedScores); }
+
+      if (storedScores !== null) { 
+        storedScores.push(thisScore[0]); 
+      } else {
+        storedScores = thisScore;
+      }
+
+      localStorage.setItem("highScores", JSON.stringify(storedScores));
+      highScores();
+    }
+  });
+}
