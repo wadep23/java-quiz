@@ -249,3 +249,12 @@ function timer() {
 function incorrect(){
   timerEl -= 10;
 }
+function clearForm() {
+  questionForm.innerHTML = "";
+}
+
+function stopTime() {
+  if (test) { console.log("stopTime");}
+  timerEl = 0;
+  clearInterval(timer);
+}
