@@ -6,6 +6,8 @@ var answers = document.getElementById('answerOptions');
 var isRightOrWrong = document.getElementById('answer');
 var rightOrWrong = document.getElementById('answerRight');
 var start = document.getElementById('startQuiz');
+var highscoreEl = document.getElementById('high-score');
+var timeLeft;
 
 
 // Create intro hero element
@@ -31,11 +33,14 @@ function quizIntro(){
   questionForm.appendChild(intstructions);
   questionForm.appendChild(startQuiz);
   
-  startQuiz.addEventListener('click', timer, clearForm);
+  startQuiz.addEventListener('click', clearForm);
+  startQuiz.addEventListener('click', round1);
 }
 
 // quiz function round 1
 function round1(){
+  timer();
+  console.log('round one, fight!')
   var heading = document.createElement('h4');
   heading.setAttribute('id', 'quiz');
   heading.textContent = "Question 1: When was the first computer virus created?"
@@ -76,12 +81,15 @@ function round1(){
 
   answer1.addEventListener('click', function(){
     console.log("wrong");
+    incorrect();
   });
   answer2.addEventListener('click', function(){
     console.log("incorrect");
+    incorrect();
   });
   answer3.addEventListener('click', function(){
     console.log('Negative Ghost Rider');
+    incorrect();
   });
   answer4.addEventListener('click', function(){
     console.log('Bingo Bango!');
@@ -141,12 +149,15 @@ function round2(){
   });
   answer2.addEventListener('click', function(){
     console.log("incorrect");
+    incorrect();
   });
   answer3.addEventListener('click', function(){
     console.log('Negative Ghost Rider');
+    incorrect();
   });
   answer4.addEventListener('click', function(){
     console.log('Nope');
+    incorrect();
 
   });
 }
@@ -188,15 +199,17 @@ function round3(){
   answers.appendChild(answer3);
   answers.appendChild(answer4);
   
-  console.log("round 1")
+  console.log("round 3")
   
   
   // Create event listeners for answers
   answer1.addEventListener('click', function(){
     console.log("wrong");
+    incorrect();
   });
   answer2.addEventListener('click', function(){
     console.log("incorrect");
+    incorrect();
   });
   answer3.addEventListener('click', function(){
     console.log('Yes!');
@@ -206,6 +219,69 @@ function round3(){
   });
   answer4.addEventListener('click', function(){
     console.log('I mean you could ask Alex but he might be disappointed in you');
+    incorrect();
+
+  });
+}
+function round4(){
+  console.log("round 4!")
+  
+  var heading = document.createElement('h4');
+  heading.setAttribute('id', 'quiz');
+  heading.textContent = " Question 4: How much wood would a wood chuck chuck"
+
+  var answers = document.createElement('ul');
+  answers.setAttribute('id', 'answers');
+  
+  var answer1 = document.createElement('button');
+  answer1.setAttribute('id', 'ans1');
+  answer1.setAttribute('class', 'btn btn-secondary');
+  answer1.textContent = 'about 5 then it needs a nap'
+  
+  var answer2 = document.createElement('button');
+  answer2.setAttribute('id', 'ans2');
+  answer2.setAttribute('class', 'btn btn-secondary');
+  answer2.textContent = "woodchucks don't chuck wood my dude"
+  
+  var answer3 = document.createElement('button');
+  answer3.setAttribute('id', 'ans3');
+  answer3.setAttribute('class', 'btn btn-secondary');
+  answer3.textContent = 'unlimited'
+  
+  var answer4 = document.createElement('button');
+  answer4.setAttribute('id', 'ans4');
+  answer4.setAttribute('class', 'btn btn-secondary');
+  answer4.textContent = 'Pineapple'
+  
+  questionForm.appendChild(heading);
+  questionForm.appendChild(answers);
+  answers.appendChild(answer1);
+  answers.appendChild(answer2);
+  answers.appendChild(answer3);
+  answers.appendChild(answer4);
+  
+  console.log("round 4")
+  
+  
+  // Create event listeners for answers
+  answer1.addEventListener('click', function(){
+    console.log("wrong");
+    incorrect();
+  });
+  answer2.addEventListener('click', function(){
+    console.log("incorrect");
+    correct();
+    clearForm();
+    endOfGame();
+  });
+  answer3.addEventListener('click', function(){
+    console.log('Yes!');
+    incorrect();
+
+  });
+  answer4.addEventListener('click', function(){
+    console.log('I agree but also no');
+    incorrect();
 
   });
 }
@@ -229,118 +305,123 @@ function timer() {
       timerEl.textContent = 'Time: 0';
       // Use `clearInterval()` to stop the timer
       clearInterval(timeInterval);
+      endOfGame();
       
       
     }
   }, 1000);
-  var questionForm = document.getElementById("quizIntro");
-  questionForm.remove();
-  var questionForm = document.getElementById("quizInstructions");
-  questionForm.remove();
-  var questionForm = document.getElementById("startQuiz");
-  questionForm.remove();
-  console.log("success");
+  // var questionForm = document.getElementById("quizIntro");
+  // questionForm.remove();
+  // var questionForm = document.getElementById("quizInstructions");
+  // questionForm.remove();
+  // var questionForm = document.getElementById("startQuiz");
+  // questionForm.remove();
+  // console.log("success");
   
-  round1();
-}function correct(){
-  timerEl += 10;
+  // round1();
+}
+function correct(){
+  timeLeft += 10000;
 }
 
 function incorrect(){
-  timerEl -= 10;
+  timeLeft -= 10000;
 }
+
 function clearForm() {
   questionForm.innerHTML = "";
 }
 
 function stopTime() {
-  if (test) { console.log("stopTime");}
+  if (false) { console.log("stopTime");}
   timerEl = 0;
   clearInterval(timer);
 }
 function endOfGame() {
-  console.log("endOfGame");
+    
+    console.log("endOfGame");
+    stopTime();
+    clearForm();
+  
+    // timerEl.setAttribute("style", "visibility: hidden;");
+  
+    var heading = document.createElement("p");
+    heading.setAttribute("id", "main-heading");
+    heading.textContent = "GAME OVER - I hope you have enjoyed this";
+  
+    // creates elements with the instructions for the game
+    var instructions = document.createElement("p");
+    instructions.setAttribute("id", "instructions");
+    instructions.textContent = " Your score is " + timerEl; 
+  
+    // creates button to start the game
+    var playAgain = document.createElement("button");
+    playAgain.setAttribute("id", "playAgain");
+    playAgain.setAttribute("class", "btn btn-secondary");
+    playAgain.textContent = "Play again";
+  
+    // creates input for user to add initials
+    var par = document.createElement("p");
+  
+    var initialsLabel = document.createElement("label");
+    initialsLabel.setAttribute("for","userInitials");
+    initialsLabel.textContent = "Enter Initials: ";
+  
+    var initialsInput = document.createElement("input");
+    initialsInput.setAttribute("id","userInitials");
+    initialsInput.setAttribute("name","userInitials");
+    initialsInput.setAttribute("minlength","3");
+    initialsInput.setAttribute("maxlength","3");
+    initialsInput.setAttribute("size","3");
+  
+  
+    questionForm.appendChild(heading);
+    questionForm.appendChild(instructions);
+    questionForm.appendChild(initialsLabel);
+    questionForm.appendChild(initialsInput);
+    questionForm.appendChild(par);
+    questionForm.appendChild(playAgain);
+  
+    playAgain.addEventListener("click", round1);
+  
+    initialsInput.addEventListener("input", function() {
+      initialsInput.value = initialsInput.value.toUpperCase();
+      if ( initialsInput.value.length === 3 ) { 
+  
+        //create object for this score
+        var thisScore = [ { name: initialsInput.value, score: timeLeft } ]; 
+  
+        //get highscores from memory
+        var storedScores = JSON.parse(localStorage.getItem("highScores")); 
+        { console.log("storedScore",storedScores); }
+  
+        if (storedScores !== null) { 
+          storedScores.push(thisScore[0]); 
+        } else {
+          storedScores = thisScore;
+        }
+  
+        localStorage.setItem("highScores", JSON.stringify(storedScores));
+        highScores();
+      }
+    });
+  }
+
+function highScores() {
   stopTime();
   clearForm();
 
-  timerTab.setAttribute("style", "visibility: hidden;");
-
-  var heading = document.createElement("p");
-  heading.setAttribute("id", "main-heading");
-  heading.textContent = "GAME OVER - I hope you have enjoyed this";
-
-  // creates elements with the instructions for the game
-  var instructions = document.createElement("p");
-  instructions.setAttribute("id", "instructions");
-  instructions.textContent = " Your score is " + score; 
-
-  // creates button to start the game
-  var playAgain = document.createElement("button");
-  playAgain.setAttribute("id", "playAgain");
-  playAgain.setAttribute("class", "btn btn-secondary");
-  playAgain.textContent = "Play again";
-
-  // creates input for user to add initials
-  var par = document.createElement("p");
-
-  var initialsLabel = document.createElement("label");
-  initialsLabel.setAttribute("for","userInitials");
-  initialsLabel.textContent = "Enter Initials: ";
-
-  var initialsInput = document.createElement("input");
-  initialsInput.setAttribute("id","userInitials");
-  initialsInput.setAttribute("name","userInitials");
-  initialsInput.setAttribute("minlength","3");
-  initialsInput.setAttribute("maxlength","3");
-  initialsInput.setAttribute("size","3");
-
-
-  mainEl.appendChild(heading);
-  mainEl.appendChild(instructions);
-  mainEl.appendChild(initialsLabel);
-  mainEl.appendChild(initialsInput);
-  mainEl.appendChild(par);
-  mainEl.appendChild(playAgain);
-
-  playAgain.addEventListener("click", round1);
-
-  initialsInput.addEventListener("input", function() {
-    initialsInput.value = initialsInput.value.toUpperCase();
-    if ( initialsInput.value.length === 3 ) { 
-
-      //create object for this score
-      var thisScore = [ { type: quizType, name: initialsInput.value, score: score } ]; 
-
-      //get highscores from memory
-      var storedScores = JSON.parse(localStorage.getItem("highScores")); 
-      if (test) { console.log("storedScore",storedScores); }
-
-      if (storedScores !== null) { 
-        storedScores.push(thisScore[0]); 
-      } else {
-        storedScores = thisScore;
-      }
-
-      localStorage.setItem("highScores", JSON.stringify(storedScores));
-      highScores();
-    }
-  });
-}
-function highScores() {
-  stopTime();
-  clearDetails();
-
-  timerTab.setAttribute("style", "visibility: hidden;");
+  // timerEl.setAttribute("style", "visibility: hidden;");
 
   //get scores from storage
-  let storedScores = JSON.parse(localStorage.getItem("highScores")); 
+  var storedScores = JSON.parse(localStorage.getItem("highScores")); 
 
   // draw heading
-  let heading = document.createElement("h2");
+  var heading = document.createElement("h2");
   heading.setAttribute("id", "main-heading");
   heading.textContent = "Top 5 High Score Hall of Fame";
 
-  mainEl.appendChild(heading);
+  questionForm.appendChild(heading);
 
   // Render a new li for each score
   // TODO check for this error 
@@ -349,7 +430,7 @@ function highScores() {
     storedScores.sort((a,b) => (a.score < b.score) ? 1: -1);
 
     // sets the number of scores to display to 5 or the number of games played. Which ever is less
-    let numScores2Display = 5;
+    var numScores2Display = 5;
     if ( storedScores.length < 5 ) { 
       numScores2Display = storedScores.length; 
     }
@@ -358,25 +439,26 @@ function highScores() {
       var s = storedScores[i];
 
       var p = document.createElement("p");
-      p.textContent = s.name + " " + s.score + " ( " + s.type + " )";
-      mainEl.appendChild(p);
+      p.textContent = s.name + " " + s.score;
+      questionForm.appendChild(p);
     }
   } else {
     var p = document.createElement("p");
     p.textContent =  "Your Initials Here!"
-    mainEl.appendChild(p);
+    questionForm.appendChild(p);
   }
 
 
   // creates button to start the game
-  let playAgain = document.createElement("button");
+  var playAgain = document.createElement("button");
   playAgain.setAttribute("id", "playAgain");
   playAgain.setAttribute("class", "btn btn-secondary");
   playAgain.textContent = "Play!";
 
-  mainEl.appendChild(playAgain);
+  questionForm.appendChild(playAgain);
 
-  playAgain.addEventListener("click", init);
+  playAgain.addEventListener("click", clearForm);
+  playAgain.addEventListener("click", timer);
 }
 
-highscoreDiv.addEventListener("click", highScores);
+highscoreEl.addEventListener("click", highScores);
