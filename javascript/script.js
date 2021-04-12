@@ -17,6 +17,7 @@ function quizIntro(){
   // need to call a reset function
   var heading = document.createElement('h3');
   heading.setAttribute('id', 'quizIntro');
+  heading.setAttribute('style', 'font-weight: bold')
   heading.textContent = "Welcome to the 'Quizinator 3000'!"
   
   var intstructions = document.createElement('p');
